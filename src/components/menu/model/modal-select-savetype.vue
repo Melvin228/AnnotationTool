@@ -61,6 +61,13 @@
                 Pascal VOC XML
               </button>
             </li>
+            <li class="list-item-style">
+              <button type="button" class="btn"
+              @click="validate(_ext.YOLO_V5)">
+                Yolo v5
+                
+              </button>
+            </li>
           </ul>
         </div>
       </div>
@@ -161,6 +168,7 @@ export default {
         case Ext.COCO_JSON:
         case Ext.DLIB_XML:
         case Ext.NIMN:
+        case Ext.YOLO_V5:
           /**
            * Emits save event
            * @param {String} filesxt - file extension

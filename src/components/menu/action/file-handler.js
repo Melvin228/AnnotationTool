@@ -400,6 +400,61 @@ export function encodeAsCocoJson(store) {
 }
 
 /**
+ *  Encode data as yolov5 text format
+ * @param {Vuex.Store} store - store instance
+ */
+
+export function encodeAsYoloV5(store) {
+  let storeData = getStoreData(store);
+
+  let { images: _images, shapes: _shapes } = storeData["image-store"];
+  let yolo = {
+    category: 0,
+    x: 0,
+    y: 0,
+    w: 0,
+    h: 0
+  };
+  let classes = ["BMW", "BANANA"];
+  let x1, y1, x2, y2, w, h, u, v, nw, nh;
+
+  Object.values(_images).forEach(image => {
+    w = image.size.width;
+    h = image.size.height;
+
+    image.shapes.forEach(shapeId => {
+      let shape = _shapes[shapeId];
+      if (shape.type == RECTANGLE) {
+        x1 = shape.points[0];
+        y1 = shape.points[1];
+        x2 = shape.points[0] + shape.points[2];
+        y2 = shape.points[1] + shape.points[3];
+        u = (x1 + x2) / 2 / w;
+        v = (y1 + y2) / 2 / h;
+        nw = (x2 - x1) / w;
+        nh = (y2 - y1) / h;
+
+        classes.push(shape.label);
+        yolo = {
+          category: classes.length,
+          x: u,
+          y: v,
+          w: nw,
+          h: nh
+        };
+      }
+    });
+  });
+
+  console.log(Object.values(yolo).join(" "));
+
+  return {
+    results: Object.values(yolo).join(" "),
+    classes: classes
+  };
+}
+
+/**
  * Helper method to calculate area of shape
  * @param {Points[]} coords - array of points
  * @see getPoints for more details

@@ -24,7 +24,8 @@ import {
   encodeAsNimn,
   encodeAsDlibXML,
   encodeAsDlibPts,
-  encodeAsCocoJson
+  encodeAsCocoJson,
+  encodeAsYoloV5
 } from "../action/file-handler";
 import { Ext } from "../filetype";
 import ModalSaveType from "./modal-select-savetype";
@@ -48,7 +49,8 @@ export default {
         [Ext.NIMN]: "Untitled_imgLab",
         [Ext.DLIB_XML]: "_dlib-xml",
         [Ext.DLIB_PTS]: "_dlib_pts",
-        [Ext.COCO_JSON]: "_coco"
+        [Ext.COCO_JSON]: "_coco",
+        [Ext.YOLO_V5]: "_yolov5"
       },
       // Selected file type / exntension
       filetype: null,
@@ -182,6 +184,10 @@ export default {
           this.saveAsCocoJSON(filename);
           break;
         }
+        case Ext.YOLO_V5: {
+          this.saveAsYolo(filename);
+          break;
+        }
         default: {
           console.error("Unknown error, shouldn't reach here");
         }
@@ -222,6 +228,24 @@ export default {
     saveAsNimn(filename) {
       let nimnStore = encodeAsNimn(this.$store);
       this.download(nimnStore, filename, "application/nimn");
+    },
+
+    /**
+     *
+     * Save store data to yolo format
+     * @param {String} filename - filename
+     */
+    saveAsYolo(filename) {
+      let { results, classes } = encodeAsYoloV5(this.$store);
+      this.download(
+        [
+          this.download(results, filename, "text/plain"),
+          this.download(classes, "classes", "text/plain")
+        ],
+
+        "zip_file",
+        "application/zip"
+      );
     },
 
     /**
