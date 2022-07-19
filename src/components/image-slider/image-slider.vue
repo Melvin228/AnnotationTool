@@ -209,14 +209,14 @@ export default {
       }
 
       // Shortcuts for importing image / folder
-      if (key !== "o") return;
-      event.preventDefault();
-      event.stopPropagation();
-      if (event.ctrlKey && event.altKey) {
-        this.$refs.uploadFile.click();
-      } else if (event.altKey) {
-        this.$refs.uploadFolder.click();
-      }
+      // if (key !== "o") return;
+      // event.preventDefault();
+      // event.stopPropagation();
+      // if (event.ctrlKey && event.altKey) {
+      //   this.$refs.uploadFile.click();
+      // } else if (event.altKey) {
+      //   this.$refs.uploadFolder.click();
+      // }
     }
   },
   watch: {

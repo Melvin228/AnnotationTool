@@ -218,7 +218,7 @@ export default {
      */
     saveAsDlibXml(filename) {
       let dlibXML = encodeAsDlibXML(this.$store);
-      this.download(dlibXML, filename, "text/xml");
+      this.download(dlibXML, `Downloads/Honda/${filename}`, "text/xml");
     },
 
     /**
@@ -236,16 +236,10 @@ export default {
      * @param {String} filename - filename
      */
     saveAsYolo(filename) {
-      let { results, classes } = encodeAsYoloV5(this.$store);
-      this.download(
-        [
-          this.download(results, filename, "text/plain"),
-          this.download(classes, "classes", "text/plain")
-        ],
+      let { results } = encodeAsYoloV5(this.$store);
 
-        "zip_file",
-        "application/zip"
-      );
+      this.download(results, `${filename}`, "text/plain");
+      // this.download(classes, "classes", "text/plain");
     },
 
     /**
